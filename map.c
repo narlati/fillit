@@ -6,7 +6,7 @@
 /*   By: narlati <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 17:06:47 by narlati           #+#    #+#             */
-/*   Updated: 2016/11/15 17:06:50 by narlati          ###   ########.fr       */
+/*   Updated: 2016/11/16 14:07:04 by narlati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_map	*newmap(void)
 	if (ret == NULL)
 		return (NULL);
 	ret->currantsize = 0;
+	ret->optofind = 0;
 	ft_memset(ret->tab, '.', sizeof(ret->tab));
 	return (ret);
 }
@@ -79,12 +80,15 @@ void	remap(t_map *t)
 	int line;
 	int i;
 
-	maxsize = 0;
+	maxsize = t->currantsize - 1;
+	int maxtest = t->currantsize + 5;
+	if (maxtest > 26 * 4)
+		maxtest = 26 * 4;
 	line = 0;
-	while (line < 26 * 4)
+	while (line < maxtest)
 	{
 		i = 0;
-		while (i < 26 * 4)
+		while (i < maxtest)
 		{
 			if (t->tab[line][i] != '.')
 			{
