@@ -6,7 +6,7 @@
 /*   By: narlati <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 17:06:24 by narlati           #+#    #+#             */
-/*   Updated: 2016/11/16 10:58:08 by ndombre          ###   ########.fr       */
+/*   Updated: 2016/11/18 16:16:34 by narlati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	run(int fd)
 	t = NULL;
 	if (get_tetrit(fd, &t) != 1)
 	{
+		listdel(t);
 		write(1, "error\n", 6);
 		return ;
 	}
@@ -52,7 +53,7 @@ int		main(int nv, char **vv)
 {
 	int		fd;
 
-	if (nv != 2 && nv != 1)
+	if (nv != 2)
 	{
 		write(1, "usage: fillit [source_file]\n", 28);
 		return (-1);
