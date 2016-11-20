@@ -6,7 +6,7 @@
 /*   By: narlati <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 17:07:00 by narlati           #+#    #+#             */
-/*   Updated: 2016/11/15 17:13:30 by ndombre          ###   ########.fr       */
+/*   Updated: 2016/11/17 10:32:53 by narlati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef struct	s_map
 {
 	char			tab[26 * 4][26 * 4];
 	int				currantsize;
-	unsigned int	optofind;
+	int				optofind;
 }				t_map;
 
 void			print_map(t_map *map);

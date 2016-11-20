@@ -6,7 +6,7 @@
 /*   By: ndombre <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 17:05:15 by ndombre           #+#    #+#             */
-/*   Updated: 2016/11/16 14:22:16 by narlati          ###   ########.fr       */
+/*   Updated: 2016/11/20 15:25:20 by narlati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,23 @@
 #include "solve.h"
 #include "tetri.h"
 
-void	remouvecharmap(t_map *m, char c)
+void	rm_tetri_in_map(t_map *m, t_tetri *t, int x, int y)
 {
 	int i;
+	int j;
 
 	i = 0;
-	while (i < m->currantsize)
+	while (i < 4)
 	{
-		ft_memrplchr(m->tab[i], c, '.', m->currantsize);
+		j = 0;
+		while (j < 4)
+		{
+			if (t->tab[i][j] != '.')
+			{
+				m->tab[i + x][j + y] = '.';
+			}
+			j++;
+		}
 		i++;
 	}
 }
@@ -42,8 +51,9 @@ void	try(t_map *cmap, t_tetri *aplacer, t_tetri *a, t_map *best)
 			if (canput_tetri_in_map(cmap, aplacer, ci, cj))
 			{
 				put_tetri_in_map(cmap, aplacer, ci, cj);
-				solver(cmap, a, best);
-				remouvecharmap(cmap, aplacer->letter);
+				if (cmap->currantsize < best->currantsize)
+					solver(cmap, a, best);
+				rm_tetri_in_map(cmap, aplacer, ci, cj);
 				cmap->currantsize = oldsize;
 			}
 			cj++;
@@ -52,28 +62,42 @@ void	try(t_map *cmap, t_tetri *aplacer, t_tetri *a, t_map *best)
 	}
 }
 
-void	solver(t_map *tm, t_tetri *t, t_map *best)
+int		stopall(t_map *tm)
 {
-	t_tetri	*cur;
-	int		edit;
+	int i;
+	int j;
+	int nbpoin;
 
-	cur = t;
-	edit = 0;
-	if (best->optofind++ > 250000)
-		return ;
-	if (tm->currantsize >= best->currantsize)
-		return ;
-	while (cur != NULL)
+	nbpoin = 0;
+	i = 0;
+	while (i < tm->currantsize)
 	{
-		if (cur->use != 1)
+		j = 0;
+		while (j < tm->currantsize)
 		{
-			cur->use = 1;
-			edit = 1;
-			try(tm, cur, t, best);
-			cur->use = 0;
+			if (tm->tab[i][j] == '.')
+				nbpoin++;
+			j++;
 		}
-		cur = cur->next;
+		i++;
 	}
-	if (edit == 0 && tm->currantsize < best->currantsize)
+	if (nbpoin < tm->currantsize * 2 - 1)
+		return (42);
+	return (0);
+}
+
+void	solver(t_map *tm, t_tetri *cur, t_map *best)
+{
+	if (best->optofind > 7 || tm->currantsize >= best->currantsize)
+		return ;
+	if (cur != NULL)
+	{
+		try(tm, cur, cur->next, best);
+		return ;
+	}
+	if (tm->currantsize < best->currantsize)
+	{
 		cpymap(best, tm);
+		best->optofind = stopall(best);
+	}
 }

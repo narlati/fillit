@@ -6,7 +6,7 @@
 /*   By: narlati <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 17:06:24 by narlati           #+#    #+#             */
-/*   Updated: 2016/11/18 16:16:34 by narlati          ###   ########.fr       */
+/*   Updated: 2016/11/20 15:26:03 by narlati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 
 void	findsolve(t_tetri *t)
 {
-	t_map *tm;
-	t_map *best;
+	t_map	*tm;
+	t_map	*best;
 
 	best = newmap();
-	best->currantsize = 26 * 4;
 	tm = newmap();
+	best->currantsize = 26 * 4;
 	solver(tm, t, best);
 	print_map(best);
 	free(tm);
@@ -59,13 +59,10 @@ int		main(int nv, char **vv)
 		return (-1);
 	}
 	fd = 0;
-	if (nv == 2)
+	if ((fd = open(vv[1], O_RDONLY)) == -1)
 	{
-		if ((fd = open(vv[1], O_RDONLY)) == -1)
-		{
-			write(1, "error\n", 6);
-			return (-1);
-		}
+		write(1, "error\n", 6);
+		return (-1);
 	}
 	run(fd);
 	if (fd != 0)

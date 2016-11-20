@@ -6,7 +6,7 @@
 /*   By: narlati <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 17:06:47 by narlati           #+#    #+#             */
-/*   Updated: 2016/11/16 14:07:04 by narlati          ###   ########.fr       */
+/*   Updated: 2016/11/17 10:47:11 by narlati          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,40 +66,13 @@ void	put_tetri_in_map(t_map *m, t_tetri *t, int x, int y)
 			if (t->tab[i][j] != '.')
 			{
 				m->tab[i + x][j + y] = t->tab[i][j];
+				if (i + x >= m->currantsize)
+					m->currantsize = i + x + 1;
+				if (j + y >= m->currantsize)
+					m->currantsize = j + y + 1;
 			}
 			j++;
 		}
 		i++;
 	}
-	remap(m);
-}
-
-void	remap(t_map *t)
-{
-	int maxsize;
-	int line;
-	int i;
-
-	maxsize = t->currantsize - 1;
-	int maxtest = t->currantsize + 5;
-	if (maxtest > 26 * 4)
-		maxtest = 26 * 4;
-	line = 0;
-	while (line < maxtest)
-	{
-		i = 0;
-		while (i < maxtest)
-		{
-			if (t->tab[line][i] != '.')
-			{
-				if (i > maxsize)
-					maxsize = i;
-				if (line > maxsize)
-					maxsize = line;
-			}
-			i++;
-		}
-		line++;
-	}
-	t->currantsize = maxsize + 1;
 }
